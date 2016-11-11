@@ -100,7 +100,8 @@ public class RequestRouter
 				"function eraseCookie(name) {\n" +
 				"    createCookie(name,\"\",-1);\n" +
 				"}" +
-				"		createCookie('github_access_token', '" + accessToken + "', 10)\n" +
+				"		createCookie('github_access_token', '" + accessToken + "', 10);\n" +
+				"		window.close();\n" +
 				"	</script>\n" +
 				"</body>\n" +
 				"</html>";

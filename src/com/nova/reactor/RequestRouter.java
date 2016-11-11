@@ -1,6 +1,7 @@
 package com.nova.reactor;
 
 import com.nova.reactor.models.authentication.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -13,17 +14,16 @@ public class RequestRouter
 {
 	private static final String USER_AGENT = "Mozilla/5.0";
 	
+	@Value("${app.clientId}")
+	private String clientId;
+	
+	@Value("${app.clientSecret}")
+	private String clientSecret;
+	
 	@CrossOrigin(origins = "*")
 	@RequestMapping(value = "/auth/github/callback")
 	public String loginUser(@RequestParam String code) throws SQLException, IOException
 	{
-		System.getenv().forEach((x, y) -> {
-			System.out.println("x: " + x + ", y: " + y);
-		});
-		
-		String clientId = System.getenv("REACTOR_CLIENT_ID");
-		String clientSecret = System.getenv("REACTOR_CLIENT_SECRET");
-		
 		String url = "https://github.com/login/oauth/access_token";
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();

@@ -59,7 +59,19 @@ public class RequestRouter
 		
 		System.out.println("Access codE: " + response);
 		
-		return "<html><body>success... closing window.<script>if (opener && \"\" != opener.location) { opener.handler(); } window.close();</script></body></html>";
+		return
+			"<html>\n" +
+			"<body>\n" +
+			"	success... closing window.\n\n" +
+			"	<script>\n" +
+			"		var myVariable = 'hello??';\n" +
+			"		if (opener && \"\" != opener.location) {\n" +
+			"			opener.handler(myVariable);\n" +
+			"		}\n" +
+			"		window.close();\n" +
+			"	</script>\n" +
+			"</body>\n" +
+			"</html>";
 		//return new GithubAuthResponse();
 	}
 }

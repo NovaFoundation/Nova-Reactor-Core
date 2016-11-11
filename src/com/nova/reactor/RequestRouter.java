@@ -17,6 +17,10 @@ public class RequestRouter
 	@RequestMapping(value = "/auth/github/callback")
 	public String loginUser(@RequestParam String code) throws SQLException, IOException
 	{
+		System.getenv().forEach((x, y) -> {
+			System.out.println("x: " + x + ", y: " + y);
+		});
+		
 		String clientId = System.getenv("REACTOR_CLIENT_ID");
 		String clientSecret = System.getenv("REACTOR_CLIENT_SECRET");
 		

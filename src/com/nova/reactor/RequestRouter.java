@@ -101,10 +101,6 @@ public class RequestRouter
 				"    createCookie(name,\"\",-1);\n" +
 				"}" +
 				"		createCookie('github_access_token', '" + accessToken + "', 10)\n" +
-				"		if (opener && \"\" != opener.location) {\n" +
-				"			opener.handler();\n" +
-				"		}\n" +
-				"		window.close();\n" +
 				"	</script>\n" +
 				"</body>\n" +
 				"</html>";

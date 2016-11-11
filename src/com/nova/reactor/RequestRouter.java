@@ -65,21 +65,58 @@ public class RequestRouter
 		
 		Map<String, String> values = splitQuery(r.toString());
 		
-		response.setHeader("access_token", values.get("access_token"));
+		String accessToken = values.get("access_token");
+		
+		if (accessToken != null)
+		{
+			response.setHeader("access_token", accessToken);
+			
+			return
+				"<html>\n" +
+				"<body>\n" +
+				"	success... closing window.\n\n" +
+				"	<script>\n" +
+				"	function createCookie(name,value,days) {\n" +
+				"    if (days) {\n" +
+				"        var date = new Date();\n" +
+				"        date.setTime(date.getTime()+(days*24*60*60*1000));\n" +
+				"        var expires = \"; expires=\"+date.toGMTString();\n" +
+				"    }\n" +
+				"    else var expires = \"\";\n" +
+				"    document.cookie = name+\"=\"+value+expires+\"; path=/\";\n" +
+				"}\n" +
+				"\n" +
+				"function readCookie(name) {\n" +
+				"    var nameEQ = name + \"=\";\n" +
+				"    var ca = document.cookie.split(';');\n" +
+				"    for(var i=0;i < ca.length;i++) {\n" +
+				"        var c = ca[i];\n" +
+				"        while (c.charAt(0)==' ') c = c.substring(1,c.length);\n" +
+				"        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);\n" +
+				"    }\n" +
+				"    return null;\n" +
+				"}\n" +
+				"\n" +
+				"function eraseCookie(name) {\n" +
+				"    createCookie(name,\"\",-1);\n" +
+				"}" +
+				"		createCookie('github_access_token', '" + accessToken + "', 10)\n" +
+				"		if (opener && \"\" != opener.location) {\n" +
+				"			opener.handler();\n" +
+				"		}\n" +
+				"		window.close();\n" +
+				"	</script>\n" +
+				"</body>\n" +
+				"</html>";
+			//return new GithubAuthResponse();
+		}
 		
 		return
 			"<html>\n" +
 			"<body>\n" +
-			"	success... closing window.\n\n" +
-			"	<script>\n" +
-			"		if (opener && \"\" != opener.location) {\n" +
-			"			opener.handler();\n" +
-			"		}\n" +
-			"		window.close();\n" +
-			"	</script>\n" +
+			"	Failed.\n" +
 			"</body>\n" +
 			"</html>";
-		//return new GithubAuthResponse();
 	}
 	
 	public static Map<String, String> splitQuery(String query) throws UnsupportedEncodingException

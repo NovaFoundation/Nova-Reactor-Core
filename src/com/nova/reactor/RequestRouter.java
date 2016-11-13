@@ -12,6 +12,7 @@ import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class RequestRouter
@@ -26,7 +27,7 @@ public class RequestRouter
 	
 	@CrossOrigin(origins = "*")
 	@RequestMapping(method = RequestMethod.GET, value = "/builds/{repo}/{commit}")
-	public Build[] builds(/*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable String commit)
+	public Build[] builds(/*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
 	{
 		Build[] builds = new Build[] { new Build("c", "something", "124xx3520", 10, (long)50), new Build("java", "something2", "124xx35220", 10, (long)30) };
 		

@@ -35,7 +35,7 @@ public class RequestRouter
 	{
 		if (commit.isPresent())
 		{
-			return buildRepo.getBuild(repo, commit.get());
+			return buildRepo.getBuilds(repo, commit.get());
 		}
 		
 		return buildRepo.getBuilds(repo);

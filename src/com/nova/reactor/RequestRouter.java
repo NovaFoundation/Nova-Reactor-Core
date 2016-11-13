@@ -26,7 +26,7 @@ public class RequestRouter
 	private String clientSecret;
 	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(method = RequestMethod.GET, value = "/builds/{repo}/{commit}")
+	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{repo}", "/builds/{repo}/{commit}" })
 	public Build[] builds(/*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
 	{
 		Build[] builds = new Build[] { new Build("c", "something", "124xx3520", 10, (long)50), new Build("java", "something2", "124xx35220", 10, (long)30) };

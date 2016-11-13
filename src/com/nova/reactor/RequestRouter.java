@@ -4,6 +4,7 @@ import com.nova.reactor.models.Build;
 import com.nova.reactor.models.BuildRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -31,8 +32,14 @@ public class RequestRouter
 	
 	@CrossOrigin(origins = "*")
 	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{repo}", "/builds/{repo}/{commit}" })
-	public Build[] builds(/*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
+	public Build[] builds(HttpEntity<byte[]> requestEntity, /*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
 	{
+		String auth = requestEntity.getHeaders().getFirst("Authorization");
+		
+		if (auth == null)
+		{
+			System.out.println("YOU ARE NOT AUTHORIZED, BUT I DON'T CARE ATM");
+		}
 		if (commit.isPresent())
 		{
 			return buildRepo.getBuilds(repo, commit.get());

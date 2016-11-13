@@ -20,11 +20,11 @@ public class BuildRepo
 		final ArrayList<Build> builds = new ArrayList<>();
 		
 		Object[] params = new Object[] {
-			repo,
-			commit
+			repo.toLowerCase(),
+			commit.toLowerCase()
 		};
 		
-		connection.query("SELECT * FROM repo_data.builds WHERE repo=? AND commit=?", params, (ResultSetExtractor)x -> {
+		connection.query("SELECT * FROM repo_data.builds WHERE LOWER(repo)=? AND LOWER(commit)=?", params, (ResultSetExtractor)x -> {
 			if (x.next())
 			{
 				ArrayList<HashMap<String, Object>> maps = DataUtils.resultSetToArrayList(x);
@@ -46,10 +46,10 @@ public class BuildRepo
 		final ArrayList<Build> builds = new ArrayList<>();
 		
 		Object[] params = new Object[] {
-			repo
+			repo.toLowerCase()
 		};
 		
-		connection.query("SELECT * FROM repo_data.builds WHERE repo=?", params, (ResultSetExtractor)x -> {
+		connection.query("SELECT * FROM repo_data.builds WHERE LOWER(repo)=?", params, (ResultSetExtractor)x -> {
 			if (x.next())
 			{
 				ArrayList<HashMap<String, Object>> maps = DataUtils.resultSetToArrayList(x);

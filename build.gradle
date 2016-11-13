@@ -62,6 +62,7 @@ dependencies {
     //compile("org.eclipse.mylyn.github:github-parent:4.6.0-SNAPSHOT")
     //compile("org.eclipse.egit.github.core:eclipse-plugin")
     compile("org.kohsuke:github-api:1.79")
+    compile("org.modelmapper:modelmapper:0.7.7")
     testCompile("junit:junit")
 }
 

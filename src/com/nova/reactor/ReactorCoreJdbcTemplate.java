@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 @Component
-public class WolfpaqJdbcTemplate
+public class ReactorCoreJdbcTemplate
 {
 	protected final JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public WolfpaqJdbcTemplate(JdbcTemplate jdbcTemplate)
+	public ReactorCoreJdbcTemplate(JdbcTemplate jdbcTemplate)
 	{
 		this.jdbcTemplate = jdbcTemplate;
 	}

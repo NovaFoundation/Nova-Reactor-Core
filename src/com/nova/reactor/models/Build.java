@@ -1,5 +1,7 @@
 package com.nova.reactor.models;
 
+import java.util.HashMap;
+
 public class Build
 {
 	private String language, commit, repo;
@@ -10,6 +12,20 @@ public class Build
 	public Build()
 	{
 		
+	}
+	
+	public Build(HashMap<String, Object> map)
+	{
+		this(map, "language", "repo", "commit", "start_time", "end_time");
+	}
+	
+	public Build(HashMap<String, Object> map, String language, String repo, String commit, String startTime, String endTime)
+	{
+		this((String)map.get(language),
+			(String)map.get(repo),
+			(String)map.get(commit),
+			(long)map.get(startTime),
+			(Long)map.get(endTime));
 	}
 	
 	public Build(String language, String repo, String commit, long startTime, Long endTime)

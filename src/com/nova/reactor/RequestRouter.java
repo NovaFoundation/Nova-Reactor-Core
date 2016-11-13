@@ -1,6 +1,8 @@
 package com.nova.reactor;
 
 import com.nova.reactor.models.Build;
+import com.nova.reactor.models.BuildRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,13 +27,18 @@ public class RequestRouter
 	@Value("${app.clientSecret}")
 	private String clientSecret;
 	
+	@Autowired BuildRepo buildRepo;
+	
 	@CrossOrigin(origins = "*")
 	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{repo}", "/builds/{repo}/{commit}" })
 	public Build[] builds(/*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
 	{
-		Build[] builds = new Build[] { new Build("c", "something", "124xx3520", 10, (long)50), new Build("java", "something2", "124xx35220", 10, (long)30) };
+		if (commit.isPresent())
+		{
+			return buildRepo.getBuild(repo, commit.get());
+		}
 		
-		return builds;
+		return buildRepo.getBuilds(repo);
 	}
 	
 	@CrossOrigin(origins = "*")

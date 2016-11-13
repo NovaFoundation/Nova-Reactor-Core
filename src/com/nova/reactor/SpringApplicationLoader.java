@@ -3,6 +3,7 @@ package com.nova.reactor;
 import com.nova.reactor.argumentresolvers.RequestArgumentResolver;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -16,8 +17,19 @@ import java.util.List;
 public class SpringApplicationLoader extends WebMvcConfigurerAdapter
 {
     public static void main(String[] args)
-    {		
-        new SpringApplicationBuilder(SpringApplicationLoader.class)/*.web(false)*/.run(args);
+    {
+        
+        
+        
+        new AnnotationConfigApplicationContext(AppConfig.class);
+        SpringApplicationBuilder b = new SpringApplicationBuilder(SpringApplicationLoader.class);
+        
+        
+        
+        b/*.web(false)*/.run(args);
+        
+        
+        
     }
     
     @Override

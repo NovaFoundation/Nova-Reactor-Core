@@ -1,6 +1,6 @@
 package com.nova.reactor;
 
-import com.nova.reactor.models.authentication.*;
+import com.nova.reactor.models.Build;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +25,17 @@ public class RequestRouter
 	private String clientSecret;
 	
 	@CrossOrigin(origins = "*")
+	@RequestMapping(method = RequestMethod.GET, value = "/builds/{repo}/{commit}")
+	public Build[] builds(@RequestHeader("Authorization") String auth, @PathVariable String repo, @PathVariable String commit)
+	{
+		Build[] builds = new Build[] { new Build("c", "something", "124xx3520", 10, (long)50), new Build("java", "something2", "124xx35220", 10, (long)30) };
+		
+		return builds;
+	}
+	
+	@CrossOrigin(origins = "*")
 	@RequestMapping(value = "/auth/github/callback")
-	public String loginUser(@RequestParam String code, HttpServletResponse response) throws SQLException, IOException
+	public String githubOAuthCallback(@RequestParam String code, HttpServletResponse response) throws SQLException, IOException
 	{
 		String url = "https://github.com/login/oauth/access_token";
 		URL obj = new URL(url);
@@ -74,7 +83,7 @@ public class RequestRouter
 			return
 				"<html>\n" +
 				"<body>\n" +
-				"	success... closing window.\n\n" +
+				"	success... you can close this window.\n\n" +
 				"	<script>\n" +
 				"	function createCookie(name,value,days) {\n" +
 				"    if (days) {\n" +

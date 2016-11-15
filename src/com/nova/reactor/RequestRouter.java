@@ -31,8 +31,8 @@ public class RequestRouter
 	@Autowired BuildRepo buildRepo;
 	
 	@CrossOrigin(origins = "*")
-	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{repo}", "/builds/{repo}/{commit}" })
-	public Build[] builds(HttpEntity<byte[]> requestEntity, /*@RequestHeader("Authorization") String auth, */@PathVariable String repo, @PathVariable Optional<String> commit)
+	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{host}/{username}/{repo}", "/builds/{host}/{username}/{repo}/{commit}" })
+	public Build[] builds(HttpEntity<byte[]> requestEntity, /*@RequestHeader("Authorization") String auth, */@PathVariable String host, @PathVariable String username, @PathVariable String repo, @PathVariable Optional<String> commit)
 	{
 		String auth = requestEntity.getHeaders().getFirst("Authorization");
 		
@@ -42,10 +42,10 @@ public class RequestRouter
 		}
 		if (commit.isPresent())
 		{
-			return buildRepo.getBuilds(repo, commit.get());
+			return buildRepo.getBuilds(host + "/" + username + "/" + repo, commit.get());
 		}
 		
-		return buildRepo.getBuilds(repo);
+		return buildRepo.getBuilds(host + "/" + username + "/" + repo);
 	}
 	
 	@CrossOrigin(origins = "*")

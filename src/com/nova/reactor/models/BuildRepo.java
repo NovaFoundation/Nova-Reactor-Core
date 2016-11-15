@@ -57,7 +57,7 @@ public class BuildRepo
 		return builds.toArray(new Build[0]);
 	}
 	
-	public Build build(String repo, String commit)idk
+	public Build build(String repo, String commit)
 	{
 		/*Map<String, Object> keys = DataUtils.keysFromUpdate(connection,
 			"INSERT INTO users.users(username, full_name, password, email, phone_number) VALUES(?, ?, digest(digest(?, 'sha256'), 'sha256'), ?, ?)",

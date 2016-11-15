@@ -31,6 +31,15 @@ public class RequestRouter
 	@Autowired BuildRepo buildRepo;
 	
 	@CrossOrigin(origins = "*")
+	@RequestMapping(method = RequestMethod.GET, value = { "/build/{host}/{username}/{repo}", "/build/{host}/{username}/{repo}/{commit}" })
+	public Build[] build(HttpEntity<byte[]> requestEntity, /*@RequestHeader("Authorization") String auth, */@PathVariable String host, @PathVariable String username, @PathVariable String repo, @PathVariable Optional<String> commit) throws IOException, InterruptedException
+	{
+		buildRepo.build(host, username, repo, commit.isPresent() ? commit.get() : null);
+		
+		return builds(requestEntity, host, username, repo, commit);
+	}
+	
+	@CrossOrigin(origins = "*")
 	@RequestMapping(method = RequestMethod.GET, value = { "/builds/{host}/{username}/{repo}", "/builds/{host}/{username}/{repo}/{commit}" })
 	public Build[] builds(HttpEntity<byte[]> requestEntity, /*@RequestHeader("Authorization") String auth, */@PathVariable String host, @PathVariable String username, @PathVariable String repo, @PathVariable Optional<String> commit)
 	{
@@ -40,12 +49,8 @@ public class RequestRouter
 		{
 			System.out.println("YOU ARE NOT AUTHORIZED, BUT I DON'T CARE ATM");
 		}
-		if (commit.isPresent())
-		{
-			return buildRepo.getBuilds(host + "/" + username + "/" + repo, commit.get());
-		}
 		
-		return buildRepo.getBuilds(host + "/" + username + "/" + repo);
+		return buildRepo.getBuilds(host, username, repo, commit.isPresent() ? commit.get() : null);
 	}
 	
 	@CrossOrigin(origins = "*")

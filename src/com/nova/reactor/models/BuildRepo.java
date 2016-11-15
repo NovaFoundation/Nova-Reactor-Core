@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,18 +17,13 @@ public class BuildRepo
 	@Autowired
 	JdbcTemplate connection;
 	
-	public Build[] getBuilds(String repo)
-	{
-		return getBuilds(repo, null);
-	}
-	
-	public Build[] getBuilds(String repo, String commit)
+	public Build[] getBuilds(String host, String username, String repo, String commit)
 	{
 		final ArrayList<Build> builds = new ArrayList<>();
 		
 		ArrayList paramsList = new ArrayList();
 		
-		paramsList.add(repo.toLowerCase());
+		paramsList.add((host + "/" + username + "/" + repo).toLowerCase());
 		
 		String extra = "";
 		
@@ -57,8 +53,41 @@ public class BuildRepo
 		return builds.toArray(new Build[0]);
 	}
 	
-	public Build build(String repo, String commit)
+	public Build build(String host, String username, String repo, String commit) throws IOException, InterruptedException
 	{
+		File userFolder = new File(System.getProperty("user.home") + "/repos/" + host + "/" + username);
+		
+		userFolder.mkdirs();
+		
+		String ext = ".com";
+		String accessToken = null;
+		String password = accessToken != null ? ":" + accessToken : "";
+		
+		String url = "https://" + username + password + "@" + host + ext + "/" + username + "/" + repo;
+		
+		System.out.println("url: " + url);
+		
+		ProcessBuilder builder = new ProcessBuilder("git", "clone", url);
+		builder.directory(userFolder);
+		builder.redirectErrorStream(true);
+		
+		Process p = builder.start();
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+		
+		String line = null;
+		
+		while ((line = reader.readLine()) != null)
+		{
+			System.out.println(line);
+		}
+		
+		int value = p.waitFor();
+		
+		reader.close();
+		
+		System.out.println("Received value " + value);
+		
 		/*Map<String, Object> keys = DataUtils.keysFromUpdate(connection,
 			"INSERT INTO users.users(username, full_name, password, email, phone_number) VALUES(?, ?, digest(digest(?, 'sha256'), 'sha256'), ?, ?)",
 			request.getUsername(), request.getFullName(), request.getPassword(), request.getEmail(), request.getPhoneNumber());
